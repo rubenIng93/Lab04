@@ -51,6 +51,10 @@ public class Corso {
 	public String toString() {
 		return nome.toString();
 	}
+	
+	public String stampaCompleta() {
+		return this.codins+" "+this.nome+" "+this.crediti+" "+this.pd;
+	}
 
 	@Override
 	public int hashCode() {

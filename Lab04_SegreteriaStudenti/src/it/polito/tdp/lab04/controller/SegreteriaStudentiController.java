@@ -104,7 +104,7 @@ public class SegreteriaStudentiController {
     		}
     		List<Corso> corsi = model.getCorsiDataLaMatricola(nMatricola);
     		for(Corso c : corsi) {
-    			txtResult.appendText(c.getNome() + "\n");
+    			txtResult.appendText(c.stampaCompleta() + "\n");
     		}
     		
     		
