@@ -51,6 +51,28 @@ public class StudenteDAO {
 		}
 	}
 	
+	public boolean esisteMatricola(int matricola) {
+		
+		try {
+			String sql ="SELECT matricola FROM studente";
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				if(matricola == rs.getInt("matricola"))
+					return true;
+				
+			}
+			conn.close();
+			return false;
+			
+			
+		}catch (SQLException e) {
+			throw new RuntimeException("Errore Db");
+		}
+	}
+	
 	public List<Studente> getIscrittiCorso(String nomeCorso){
 			
 		String sql = "SELECT * FROM studente WHERE matricola IN (SELECT matricola FROM iscrizione i, corso c WHERE c.codins = i.codins AND c.nome = ? )";

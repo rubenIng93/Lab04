@@ -50,6 +50,40 @@ public class CorsoDAO {
 			throw new RuntimeException("Errore Db");
 		}
 	}
+	
+	public List<Corso> getCorsiStudente (int matricola){
+		
+		String sql = "SELECT * FROM corso WHERE codins IN (SELECT codins FROM iscrizione i, studente s WHERE i.matricola = s.matricola AND s.matricola = ? )";
+		List<Corso> corsi = new LinkedList<Corso>();
+		
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, matricola);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				String codins = rs.getString("codins");
+				int numeroCrediti = rs.getInt("crediti");
+				String nome = rs.getString("nome");
+				int periodoDidattico = rs.getInt("pd");
+
+				Corso c = new Corso(codins, numeroCrediti, nome, periodoDidattico);// Crea un nuovo JAVA Bean Corso
+				corsi.add(c);								// Aggiungi il nuovo oggetto Corso alla lista corsi
+				
+			
+			}
+			conn.close();
+
+			return corsi;
+
+		} catch (SQLException e) {
+			// e.printStackTrace();
+			throw new RuntimeException("Errore Db");
+		}
+		
+	}
 
 	/*
 	 * Dato un codice insegnamento, ottengo il corso

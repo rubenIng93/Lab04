@@ -33,5 +33,21 @@ public class Model {
 		
 		return iscritti;
 	}
+	
+	public List<Corso> getCorsiDataLaMatricola(int matricola){
+		
+		CorsoDAO dao = new CorsoDAO();
+		
+		List<Corso> frequentati = dao.getCorsiStudente(matricola);
+		
+		return frequentati;
+	}
+	
+	public boolean esisteMatricola(int matricola) {
+		
+		StudenteDAO dao = new StudenteDAO();
+		
+		return dao.esisteMatricola(matricola);
+	}
 
 }

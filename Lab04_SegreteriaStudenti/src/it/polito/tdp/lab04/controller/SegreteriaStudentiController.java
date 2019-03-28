@@ -67,6 +67,7 @@ public class SegreteriaStudentiController {
     		if(s.getCognome().compareTo("") == 0) {
     			txtResult.setText("Non esistono studenti con quella matricola");
     			txtMatricola.clear();
+    			return;
     		}else {
     			txtNome.setText(s.getNome());
     			txtCognome.setText(s.getCognome());
@@ -84,6 +85,35 @@ public class SegreteriaStudentiController {
 
     @FXML
     void doCercaCorsi(ActionEvent event) {
+    	
+    	txtResult.clear();
+    	String matricola = txtMatricola.getText();
+    	
+    	try {
+    		int nMatricola = Integer.parseInt(matricola);
+    		
+    		if(nMatricola > 999999 || nMatricola < 100000) {
+    			txtResult.setText("Non hai inserito il numero correttamente");
+    			txtMatricola.clear();
+    			return;
+    		}
+    		if(!model.esisteMatricola(nMatricola)) {
+    			txtResult.setText("La matricola inserita non è presente nel database");
+        		txtMatricola.clear();
+        		return;
+    		}
+    		List<Corso> corsi = model.getCorsiDataLaMatricola(nMatricola);
+    		for(Corso c : corsi) {
+    			txtResult.appendText(c.getNome() + "\n");
+    		}
+    		
+    		
+    		
+    	}catch(NumberFormatException nfe) {
+    		txtResult.setText("Non hai inserito il numero correttamente");
+    		txtMatricola.clear();
+    		return;
+    	}
     	
     	
 
