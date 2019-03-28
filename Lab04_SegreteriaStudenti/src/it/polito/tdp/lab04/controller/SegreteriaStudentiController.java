@@ -53,16 +53,57 @@ public class SegreteriaStudentiController {
     
     @FXML
     void doAutoCompletamento(ActionEvent event) {
+    	
+    	String matricola = txtMatricola.getText();
+    	try {
+    		int nMatricola = Integer.parseInt(matricola);
+    		if(nMatricola > 999999 || nMatricola < 100000) {
+    			txtResult.setText("Non hai inserito il numero correttamente");
+    			txtMatricola.clear();
+    			return;
+    		}
+    		
+    		Studente s = model.getStudenteMatricola(nMatricola);
+    		if(s.getCognome().compareTo("") == 0) {
+    			txtResult.setText("Non esistono studenti con quella matricola");
+    			txtMatricola.clear();
+    		}else {
+    			txtNome.setText(s.getNome());
+    			txtCognome.setText(s.getCognome());
+    			txtResult.setText("Studente trovato");
+    		}
+    	}catch(NumberFormatException nfe) {
+    		txtResult.setText("Non hai inserito il numero correttamente");
+    		txtMatricola.clear();
+    		return;
+    	}
+    	
+    	
 
     }
 
     @FXML
     void doCercaCorsi(ActionEvent event) {
+    	
+    	
 
     }
 
     @FXML
     void doCercaIscritti(ActionEvent event) {
+    	
+    	txtResult.clear();
+    	
+    	String corso = selettoreCorsi.getValue();
+    	if(corso.compareTo("") == 0 || corso.compareTo("Corsi") == 0) {
+    		txtResult.appendText("Seleziona un corso");
+    	}else {
+    		List<Studente> iscritti = model.getStudentiIscritti(corso);
+    		for(Studente s : iscritti) {
+    			txtResult.appendText(s.toString() + "\n");
+    		}
+    	}
+    		
 
     }
 
@@ -99,10 +140,12 @@ public class SegreteriaStudentiController {
     public void setModel(Model model) {
     	this.model = model;
     	//selettoreCorsi.getItems().addAll(); 
+    	selettoreCorsi.getItems().add("Corsi");
     	selettoreCorsi.getItems().add("");
     	for(Corso c : model.getAllCorsi()) {
     		selettoreCorsi.getItems().add(c.toString());
     	}
+    	
     	
     }
 }
